@@ -1,0 +1,99 @@
+# C 语言实现 LSTM 算法
+
+## LSTM 算法简介
+
+LSTM 全称是 "Long Short-Term Memory"，一种用来学习大量时序序列中隐含的相关性并用于预测其可能的趋势的机器学习算法。它的应用范围包括但不局限于价格走势预测、估计剩余寿命、分析语言的情感趋向、自动写作和语音合成。
+
+算法描述了一个用于计算的工作单元，它按照时间顺序接受自然数作为输入，通过计算得到对应的输出。当一系列输入计算完成时，也就得到了对应的一个输出序列。单个 LSTM 单元的学习能力是有限的，可以将输出的序列作为输入序列给另外一个 LSTM 作为输入，通过这种方式利用多个 LSTM 单元的组合提高整体学习能力。
+
+## LSTM 的计算过程
+
+作为机器学习算法的一种，LSTM 的应用包括利用大量数据进行训练和根据训练得到的参数预测两个步骤。其预测过程使用正向传播算法，训练过程采用误差反向传播算法。
+
+### LSTM 的正向传播算法
+
+一个处理 1 维序列的 LSTM 单元有 12 个参数。这里将这 12 个参数表示为：
+
+![](images/lstm-params.png)
+
+假设输入序列 `x` 和输出序列 `h` 分别有 n 个元素，表示为：
+
+![](images/lstm-inputs-outputs.png)
+
+每次计算中还会产生以下的临时变量：
+
+![](images/lstm-temp-params.png)
+
+最后 LSTM 的计算可以表示为：
+
+![](images/lstm-main.png)
+
+里面的一个函数符号表示 Sigmoid 函数：
+
+![](images/lstm-sigmoid.png)
+
+### LSTM 的误差反向传播算法
+
+假设期望输出为：
+
+![](images/lstm-hope-outputs.png)
+
+采用均方误差（MSE，Mean Squard Error）来评估实际输出与期望输出的误差：
+
+![](images/lstm-error-function.png)
+
+那么在一次正向传播后，LSTM 输出序列 h 的每个元素对 E 的影响可以用下面的一阶偏导数表示：
+
+![](images/lstm-dedh.png)
+
+进行误差反向传播需要使用 E 对 12 个参数的每一个的偏导数。与普通的神经网络算法不同的是，LSTM 利用 C(t-1) 和 h(t-1) 参与第 t 次的计算，使得第 t 次之前的计算结果会对第 t 次的输出 h(t) 产生影响。
+
+由于：
+
+![](images/lstm-zero.png)
+
+所以 t = 1 时：
+
+![](images/lstm-d-zero.png)
+
+当 t > 1 时：
+
+![](images/lstm-t2-wfh.png)
+
+![](images/lstm-t2-wfx.png)
+
+![](images/lstm-t2-bf.png)
+
+![](images/lstm-t2-wih.png)
+
+![](images/lstm-t2-wix.png)
+
+![](images/lstm-t2-bi.png)
+
+![](images/lstm-t2-wch.png)
+
+![](images/lstm-t2-wcx.png)
+
+![](images/lstm-t2-bc.png)
+
+![](images/lstm-t2-woh.png)
+
+![](images/lstm-t2-wox.png)
+
+![](images/lstm-t2-bo.png)
+
+为方便计算，激活函数导数可取：
+
+![](images/latm-activity-d.png)
+
+最后：
+
+![](images/lstm-dedall.png)
+
+一般情况下学习率取值：
+
+![](images/lstm-lr.png)
+
+采用简单的梯度下降，可以在正向传播后修正参数：
+
+![](images/lstm-bp.png)
