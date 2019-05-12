@@ -130,3 +130,67 @@ LSTM 全称是 "Long Short-Term Memory"，一种用来学习大量时序序列�
   <tr><td>浮点数 W_ox</td><td>double W_ox;</td><td>参数 <img src="images/lstm-wox.png"/></td></tr>
   <tr><td>浮点数 b_o</td><td>double b_o;</td><td>参数 <img src="images/lstm-bo.png"/></td></tr>
 </table>
+
+下面的参数不是算法必须的，但是实现时会使用：
+
+<table>
+  <tr><th>结构体变量</th><th>定义</th><th>说明</th></tr>
+  <tr><td>整数 error_no</td><td>int error_no;</td><td>错误号，无错误默认0。用于记录最后一次程序发生的错误。</td></tr>
+  <tr><td>字符指针 error_msg</td><td>char *error_msg;</td><td>发生的错误的文字说明，默认无错误，内容为指向字符串"\0"的指针。</td></tr>
+</table>
+
+### 错误编号和错误信息
+
+<table>
+  <tr><th>错误号</th><th>信息</th><th>说明</th></tr>
+  <tr><td>0</td><td>"\0"</td><td>无错误。</td></tr>
+  <tr><td>1</td><td>"not enough memory"</td><td>内存不足。</td></tr>
+</table>
+
+### 接口文档
+
+#### 1. `struct lstmlib* lstmlib_create(int length);`
+
+##### 参数
+
+1. `length`：LSTM 接受输入序列的长度。
+
+##### 返回值
+
+返回一个 `struct lstmlib*` 结构体指针。
+
+##### 功能
+
+创建一个 LSTM 单元，并返回一个结构体指针。可以对这个结构体指针使用 lstmlib 其他函数进行操作。`lstmlib_create` 方法会自动调用 `lstmlib_random_params` 对参数进行初始化赋值，赋值的范围是[-1,1]。当初始化过程存在错误的时候，产生通过`error_no`属性来判断的错误。
+
+#### 2. `char lstmlib_random_params(struct lstmlib *unit, double min, double max);`
+
+##### 参数
+
+1. `unit`：一个 LSTM 单元结构体指针。
+2. `min`：最小值。
+3. `max`：最大值。
+
+##### 返回值
+
+成功返回 `1`，失败返回`0`。
+
+##### 功能
+
+对指定的 LSTM 单元的参数进行随机初始化，初始化的范围是[`min`, `max`]。
+
+#### 3. `char lstmlib_run(struct lstmlib *unit, double *input, double *output);`
+
+##### 参数
+
+1. `unit`：一个 LSTM 单元结构体指针。
+2. `input`：输入浮点数数组指针。
+3. `output`：输出浮点数数组指针。
+
+##### 返回值
+
+执行成功返回 `1`，失败返回`0`。
+
+##### 功能
+
+以指定`input`、`output`作为输入输出区域，运行 LSTM。
