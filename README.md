@@ -84,7 +84,7 @@ LSTM 全称是 "Long Short-Term Memory"，一种用来学习大量时序序列�
 
 为方便计算，激活函数导数可取：
 
-![](images/latm-activity-d.png)
+![](images/lstm-activity-d.png)
 
 最后：
 
@@ -97,3 +97,36 @@ LSTM 全称是 "Long Short-Term Memory"，一种用来学习大量时序序列�
 采用简单的梯度下降，可以在正向传播后修正参数：
 
 ![](images/lstm-bp.png)
+
+## C 实现方法
+
+用结构体来保存计算过程所需的变量，并提供一个函数用来初始化并返回这个结构体。后续提供一系列的函数用于操作这个结构体。
+
+### 数据结构
+
+结构体中变量名称和算法的参数之间的对应关系是：
+
+<table>
+  <tr><th>结构体变量</th><th>定义</th><th>对应算法中的变量</th></tr>
+  <tr><td>整数 length</td><td>int length;</td><td>表示 LSTM 计算序列长度</td></tr>
+  <tr><td>浮点数指针 x</td><td>double *x;</td><td>输入序列 x</td></tr>
+  <tr><td>浮点数指针 h</td><td>double *h;</td><td>输出序列 h</td></tr>
+  <tr><td>浮点数指针 f</td><td>double *f;</td><td>中间变量序列 f</td></tr>
+  <tr><td>浮点数指针 i</td><td>double *i;</td><td>中间变量序列 i</td></tr>
+  <tr><td>浮点数指针 tilde_C</td><td>double *tilde_C;</td><td>中间变量序列 <img src="images/lstm-tilde-c.png"/></td></tr>
+  <tr><td>浮点数指针 C</td><td>double *C;</td><td>中间变量序列 C</td></tr>
+  <tr><td>浮点数指针 o</td><td>double *o;</td><td>中间变量序列 o</td></tr>
+  <tr><td>浮点数指针 hat_h</td><td>double *hat_h;</td><td>期望输出序列 <img src="images/lstm-hat-h.png"/></td></tr>
+  <tr><td>浮点数 W_fh</td><td>double W_fh;</td><td>参数 <img src="images/lstm-wfh.png"/></td></tr>
+  <tr><td>浮点数 W_fx</td><td>double W_fx;</td><td>参数 <img src="images/lstm-wfx.png"/></td></tr>
+  <tr><td>浮点数 b_f</td><td>double b_f;</td><td>参数 <img src="images/lstm-bf.png"/></td></tr>
+  <tr><td>浮点数 W_ih</td><td>double W_ih;</td><td>参数 <img src="images/lstm-wih.png"/></td></tr>
+  <tr><td>浮点数 W_ix</td><td>double W_ix;</td><td>参数 <img src="images/lstm-wix.png"/></td></tr>
+  <tr><td>浮点数 b_i</td><td>double b_i;</td><td>参数 <img src="images/lstm-bi.png"/></td></tr>
+  <tr><td>浮点数 W_Ch</td><td>double W_Ch;</td><td>参数 <img src="images/lstm-wCh.png"/></td></tr>
+  <tr><td>浮点数 W_Cx</td><td>double W_Cx;</td><td>参数 <img src="images/lstm-wCx.png"/></td></tr>
+  <tr><td>浮点数 b_C</td><td>double b_C;</td><td>参数 <img src="images/lstm-bC.png"/></td></tr>
+  <tr><td>浮点数 W_oh</td><td>double W_oh;</td><td>参数 <img src="images/lstm-woh.png"/></td></tr>
+  <tr><td>浮点数 W_ox</td><td>double W_ox;</td><td>参数 <img src="images/lstm-wox.png"/></td></tr>
+  <tr><td>浮点数 b_o</td><td>double b_o;</td><td>参数 <img src="images/lstm-bo.png"/></td></tr>
+</table>
