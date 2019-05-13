@@ -109,7 +109,6 @@ char lstmlib_random_params(struct lstmlib *unit, double min, double max)
         (*unit).C[i] = (double)rand() / RAND_MAX * diff + min;
         (*unit).o[i] = (double)rand() / RAND_MAX * diff + min;
         (*unit).hat_h[i] = (double)rand() / RAND_MAX * diff + min;
-        printf("%d\n", i);
     } while (i--);
     (*unit).W_fh = (double)rand() / RAND_MAX * diff + min;
     (*unit).W_fx = (double)rand() / RAND_MAX * diff + min;
