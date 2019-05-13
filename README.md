@@ -157,11 +157,11 @@ LSTM 全称是 "Long Short-Term Memory"，一种用来学习大量时序序列�
 
 ##### 返回值
 
-返回一个 `struct lstmlib*` 结构体指针。
+返回一个 `struct lstmlib*` 结构体指针，或者失败时返回 `NULL`。
 
 ##### 功能
 
-创建一个 LSTM 单元，并返回一个结构体指针。可以对这个结构体指针使用 lstmlib 其他函数进行操作。`lstmlib_create` 方法会自动调用 `lstmlib_random_params` 对参数进行初始化赋值，赋值的范围是[-1,1]。当初始化过程存在错误的时候，产生通过`error_no`属性来判断的错误。
+创建一个 LSTM 单元，并返回一个结构体指针。可以对这个结构体指针使用 lstmlib 其他函数进行操作。`lstmlib_create` 方法会自动调用 `lstmlib_random_params` 对参数进行初始化赋值，赋值的范围是[-1,1]。
 
 #### 2. `char lstmlib_random_params(struct lstmlib *unit, double min, double max);`
 
