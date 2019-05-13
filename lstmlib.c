@@ -97,7 +97,7 @@ char lstmlib_random_params(struct lstmlib *unit, double min, double max)
     if (max < min) {
         return 0;
     }
-    diff = man - min;
+    diff = max - min;
     i = (*unit).length - 1;
     do {
         (*unit).x[i] = rand() / RAND_MAX * diff + min;
