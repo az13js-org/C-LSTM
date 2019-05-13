@@ -1,5 +1,6 @@
 #include "lstmlib.h"
 #include <stdlib.h>
+#include <math.h>
 
 struct lstmlib* lstmlib_create(int length)
 {
@@ -82,5 +83,44 @@ struct lstmlib* lstmlib_create(int length)
         free(unit);
         return NULL;
     }
+    lstmlib_random_params(unit, -1, 1);
     return unit;
+}
+
+char lstmlib_random_params(struct lstmlib *unit, double min, double max)
+{
+    int i;
+    double diff;
+    if (NULL == unit) {
+        return 0;
+    }
+    if (max < min) {
+        return 0;
+    }
+    diff = man - min;
+    i = (*unit).length - 1;
+    do {
+        (*unit).x[i] = rand() / RAND_MAX * diff + min;
+        (*unit).h[i] = rand() / RAND_MAX * diff + min;
+        (*unit).f[i] = rand() / RAND_MAX * diff + min;
+        (*unit).i[i] = rand() / RAND_MAX * diff + min;
+        (*unit).tilde_C[i] = rand() / RAND_MAX * diff + min;
+        (*unit).C[i] = rand() / RAND_MAX * diff + min;
+        (*unit).o[i] = rand() / RAND_MAX * diff + min;
+        (*unit).hat_h[i] = rand() / RAND_MAX * diff + min;
+        printf("%d\n", i);
+    } while (i--);
+    (*unit).W_fh = rand() / RAND_MAX * diff + min;
+    (*unit).W_fx = rand() / RAND_MAX * diff + min;
+    (*unit).b_f = rand() / RAND_MAX * diff + min;
+    (*unit).W_ih = rand() / RAND_MAX * diff + min;
+    (*unit).W_ix = rand() / RAND_MAX * diff + min;
+    (*unit).b_i = rand() / RAND_MAX * diff + min;
+    (*unit).W_Ch = rand() / RAND_MAX * diff + min;
+    (*unit).W_Cx = rand() / RAND_MAX * diff + min;
+    (*unit).b_C = rand() / RAND_MAX * diff + min;
+    (*unit).W_oh = rand() / RAND_MAX * diff + min;
+    (*unit).W_ox = rand() / RAND_MAX * diff + min;
+    (*unit).b_o = rand() / RAND_MAX * diff + min;
+    return 1;
 }

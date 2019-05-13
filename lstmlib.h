@@ -30,5 +30,6 @@ struct lstmlib
 };
 
 struct lstmlib* lstmlib_create(int length);
+char lstmlib_random_params(struct lstmlib *unit, double min, double max);
 
 #endif
