@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     printf("= %d\n", (*unit).tilde_C);
     printf("= %d\n", (*unit).C);
     printf("= %d\n", (*unit).o);
-    printf("= %lf\n", (*unit).hat_h);
+    printf("= %d\n", (*unit).hat_h);
     printf("= %lf\n", (*unit).W_fh);
     printf("= %lf\n", (*unit).W_fx);
     printf("= %lf\n", (*unit).b_f);
