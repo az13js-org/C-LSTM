@@ -188,5 +188,5 @@ double lstmlib_get_mse(struct lstmlib *unit)
         s = (*unit).h[i] - (*unit).hat_h[i];
         sum += (s * s);
     } while (i--);
-    return sqrt(sum) / (*unit).length;
+    return sum / (*unit).length;
 }
