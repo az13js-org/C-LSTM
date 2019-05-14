@@ -174,3 +174,19 @@ char lstmlib_run(struct lstmlib *unit, double *input, double *output)
     (*unit).h = output_back;
     return 1;
 }
+
+double lstmlib_get_mse(struct lstmlib *unit)
+{
+    int i;
+    double s, sum;
+    if (NULL == unit) {
+        return 0.0;
+    }
+    sum = 0.0;
+    i = (*unit).length - 1;
+    do {
+        s = (*unit).h[i] - (*unit).hat_h[i];
+        sum += (s * s);
+    } while (i--);
+    return sqrt(sum) / (*unit).length;
+}

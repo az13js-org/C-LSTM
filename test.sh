@@ -8,3 +8,6 @@ gcc -O3 lstmlib.c test_create.c -lm -o test_create.out
 
 gcc -O3 lstmlib.c test_run.c -lm -o test_run.out
 ./test_run.out
+
+gcc -O3 lstmlib.c test_mse.c -lm -o test_mse.out
+./test_mse.out
