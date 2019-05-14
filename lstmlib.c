@@ -124,3 +124,53 @@ char lstmlib_random_params(struct lstmlib *unit, double min, double max)
     (*unit).b_o = (double)rand() / RAND_MAX * diff + min;
     return 1;
 }
+
+char lstmlib_run(struct lstmlib *unit, double *input, double *output)
+{
+    int i, length;
+    double s;
+    double *input_back;
+    double *output_back;
+    if (NULL == unit) {
+        return 0;
+    }
+    if (NULL == input) {
+        return 0;
+    }
+    if (NULL == output) {
+        return 0;
+    }
+    input_back = (*unit).x;
+    output_back = (*unit).h;
+    (*unit).x = input;
+    (*unit).h = output;
+    length = (*unit).length;
+    for (i = 0; i < length; i++) {
+        if (i == 0) {
+            s = (*unit).b_f;
+            (*unit).f[i] = 1.0 / (1.0 + exp(-1.0 * s));
+            s = (*unit).b_i;
+            (*unit).i[i] = 1.0 / (1.0 + exp(-1.0 * s));
+            s = (*unit).b_C;
+            (*unit).tilde_C[i] = tanh(s);
+            (*unit).C[i] = (*unit).i[i] * (*unit).tilde_C[i];
+            s = (*unit).b_o;
+            (*unit).o[i] = 1.0 / (1.0 + exp(-1.0 * s));
+            (*unit).h[i] = (*unit).o[i] * tanh((*unit).C[i]);
+        } else {
+            s = (*unit).W_fh * (*unit).h[i - 1] + (*unit).W_fx * (*unit).x[i - 1] + (*unit).b_f;
+            (*unit).f[i] = 1.0 / (1.0 + exp(-1.0 * s));
+            s = (*unit).W_ih * (*unit).h[i - 1] + (*unit).W_ix * (*unit).x[i - 1] + (*unit).b_i;
+            (*unit).i[i] = 1.0 / (1.0 + exp(-1.0 * s));
+            s = (*unit).W_Ch * (*unit).h[i - 1] + (*unit).W_Cx * (*unit).x[i - 1] + (*unit).b_C;
+            (*unit).tilde_C[i] = tanh(s);
+            (*unit).C[i] = (*unit).f[i] * (*unit).C[i - 1] + (*unit).i[i] * (*unit).tilde_C[i];
+            s = (*unit).W_oh * (*unit).h[i - 1] + (*unit).W_ox * (*unit).x[i - 1] + (*unit).b_o;
+            (*unit).o[i] = 1.0 / (1.0 + exp(-1.0 * s));
+            (*unit).h[i] = (*unit).o[i] * tanh((*unit).C[i]);
+        }
+    }
+    (*unit).x = input_back;
+    (*unit).h = output_back;
+    return 1;
+}
