@@ -13,15 +13,15 @@ int main(int argc, char *argv[])
         return 0;
     }
     unit = lstmlib_create(10);
-    printf("= %d\n", (*unit).length);
-    printf("= %d\n", (*unit).x);
-    printf("= %d\n", (*unit).h);
-    printf("= %d\n", (*unit).f);
-    printf("= %d\n", (*unit).i);
-    printf("= %d\n", (*unit).tilde_C);
-    printf("= %d\n", (*unit).C);
-    printf("= %d\n", (*unit).o);
-    printf("= %d\n", (*unit).hat_h);
+    printf("= %d\n", (unsigned int)(*unit).length);
+    printf("= %d\n", (unsigned int)(*unit).x);
+    printf("= %d\n", (unsigned int)(*unit).h);
+    printf("= %d\n", (unsigned int)(*unit).f);
+    printf("= %d\n", (unsigned int)(*unit).i);
+    printf("= %d\n", (unsigned int)(*unit).tilde_C);
+    printf("= %d\n", (unsigned int)(*unit).C);
+    printf("= %d\n", (unsigned int)(*unit).o);
+    printf("= %d\n", (unsigned int)(*unit).hat_h);
     printf("= %lf\n", (*unit).W_fh);
     printf("= %lf\n", (*unit).W_fx);
     printf("= %lf\n", (*unit).b_f);
