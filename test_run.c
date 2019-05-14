@@ -9,26 +9,19 @@ int main(int argc, char *argv[])
     struct lstmlib *unit;
     double *input;
     double *output;
-    printf("Test lstmlib_create()\n");
-    unit = lstmlib_create(0);
-    if (NULL == unit) {
-        printf("create(0) success\n");
-    } else {
-        printf("create(0) fail.\n");
-        return 0;
-    }
-    unit = lstmlib_create(5);
-    input = (double*)calloc(5, sizeof (double));
-    output = (double*)calloc(5, sizeof (double));
-    i = 4;
+    int l = 100;
+    unit = lstmlib_create(l);
+    input = (double*)calloc(l, sizeof (double));
+    output = (double*)calloc(l, sizeof (double));
+    i = l;
     do {
         input[i] = (double)rand() / RAND_MAX * 2 - 1;
         output[i] = 0;
     } while (i--);
     lstmlib_run(unit, input, output);
-    i = 4;
-    do {
-        printf("%d, %lf\n", i, output[i]);
-    } while (i--);
+    printf("id,h,x,f,i,tilde_C,C,o,hat_h\n");
+    for (i = 0; i < l; i++) {
+        printf("%d,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf\n", i, output[i], input[i], (*unit).f[i], (*unit).i[i], (*unit).tilde_C[i], (*unit).C[i], (*unit).o[i], (*unit).hat_h[i]);
+    }
     return 0;
 }
