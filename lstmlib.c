@@ -101,8 +101,8 @@ char lstmlib_random_params(struct lstmlib *unit, double min, double max)
     diff = max - min;
     i = (*unit).length - 1;
     do {
-        (*unit).x[i] = (double)rand() / RAND_MAX * diff + min;
-        (*unit).h[i] = (double)rand() / RAND_MAX * diff + min;
+        (*unit).x[i] = 0.0;
+        (*unit).h[i] = 0.0;
         (*unit).f[i] = (double)rand() / RAND_MAX * diff + min;
         (*unit).i[i] = (double)rand() / RAND_MAX * diff + min;
         (*unit).tilde_C[i] = (double)rand() / RAND_MAX * diff + min;
