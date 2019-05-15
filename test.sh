@@ -11,3 +11,6 @@ gcc -O3 lstmlib.c test_run.c -lm -o test_run.out
 
 gcc -O3 lstmlib.c test_mse.c -lm -o test_mse.out
 ./test_mse.out
+
+gcc -O3 lstmlib.c test_fitunit.c -lm -o test_fitunit.out
+./test_fitunit.out

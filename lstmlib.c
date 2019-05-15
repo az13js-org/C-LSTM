@@ -190,3 +190,25 @@ double lstmlib_get_mse(struct lstmlib *unit)
     } while (i--);
     return sum / (*unit).length;
 }
+
+char lstmlib_fit_unit(struct lstmlib *unit, double lr)
+{
+    int i, length;
+    double d_h_W_fh, d_h_W_fx, d_h_b_f;
+    double d_h_W_ih, d_h_W_ix, d_h_b_i;
+    double d_h_W_Ch, d_h_W_Cx, d_h_b_C;
+    double d_h_W_oh, d_h_W_ox, d_h_b_o;
+    double d_E_W_fh, d_E_W_fx, d_E_b_f;
+    double d_E_W_ih, d_E_W_ix, d_E_b_i;
+    double d_E_W_Ch, d_E_W_Cx, d_E_b_C;
+    double d_E_W_oh, d_E_W_ox, d_E_b_o;
+    if (NULL == unit) {
+        return 0;
+    }
+    length = (*unit).length;
+    for (i = 0; i < length; i++) {
+        if (0 == i) {
+        } else {
+        }
+    }
+}
