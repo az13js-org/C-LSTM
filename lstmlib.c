@@ -197,6 +197,7 @@ double lstmlib_get_mse(struct lstmlib *unit)
 char lstmlib_fit_unit(struct lstmlib *unit, double lr)
 {
     int i, length;
+    double temp1, temp2;
     double d_h_W_fh = 0.0, d_h_W_fx = 0.0, d_h_b_f = 0.0;
     double d_h_W_ih = 0.0, d_h_W_ix = 0.0, d_h_b_i = 0.0;
     double d_h_W_Ch = 0.0, d_h_W_Cx = 0.0, d_h_b_C = 0.0;
@@ -211,9 +212,22 @@ char lstmlib_fit_unit(struct lstmlib *unit, double lr)
     length = (*unit).length;
     for (i = 0; i < length; i++) {
         if (0 == i) {
+            d_h_b_f = 0.0;
             d_h_W_fh = 0.0;
             d_h_W_fx = 0.0;
-            d_h_b_f = 0.0;// TODO
+            temp1 = tanh((*unit).C[i]);
+            temp2 = 1.0 / (1.0 - exp(-((*unit).W_ix * (*unit).x[i] + (*unit).b_i[i])));
+            d_h_b_i = (*unit).o[i] * (1.0 - temp1 * temp1) * (*unit).tilde_C[i] * (1.0 - temp2) * temp2;
+            d_h_W_ih = 0.0;
+            d_h_W_ix = d_h_b_i * (*unit).x[i];
+            temp2 = tanh((*unit).W_Cx * (*unit).x[i] + (*unit).b_C);
+            d_h_b_C = (*unit).o[i] * (1.0 - temp1 * temp1) * (*unit).i[i] * (1.0 - temp2 * temp2);
+            d_h_W_Ch = 0.0;
+            d_h_W_Cx = d_h_b_C * (*unit).x[i];
+            temp2 = 1.0 / (1.0 - exp(-((*unit).W_ox * (*unit).x[i] + (*unit).b_o[i])));
+            d_h_b_o = temp1 * (1.0 - temp2) * temp2;
+            d_h_W_oh = 0.0;
+            d_h_W_ox = d_h_b_o * (*unit).x[i];
         } else {
         }
         d_E_W_fh = d_E_W_fh + 2.0 / length * ((*unit).h[i] - (*unit).hat_h[i]) * d_h_W_fh;
