@@ -197,11 +197,15 @@ double lstmlib_get_mse(struct lstmlib *unit)
 char lstmlib_fit_unit(struct lstmlib *unit, double lr)
 {
     int i, length;
-    double temp1, temp2;
+    double temp1, temp2, temp3;
     double d_h_W_fh = 0.0, d_h_W_fx = 0.0, d_h_b_f = 0.0;
     double d_h_W_ih = 0.0, d_h_W_ix = 0.0, d_h_b_i = 0.0;
     double d_h_W_Ch = 0.0, d_h_W_Cx = 0.0, d_h_b_C = 0.0;
     double d_h_W_oh = 0.0, d_h_W_ox = 0.0, d_h_b_o = 0.0;
+    double d_h_W_fh_last = 0.0, d_h_W_fx_last = 0.0, d_h_b_f_last = 0.0;
+    double d_h_W_ih_last = 0.0, d_h_W_ix_last = 0.0, d_h_b_i_last = 0.0;
+    double d_h_W_Ch_last = 0.0, d_h_W_Cx_last = 0.0, d_h_b_C_last = 0.0;
+    double d_h_W_oh_last = 0.0, d_h_W_ox_last = 0.0, d_h_b_o_last = 0.0;
     double d_E_W_fh = 0.0, d_E_W_fx = 0.0, d_E_b_f = 0.0;
     double d_E_W_ih = 0.0, d_E_W_ix = 0.0, d_E_b_i = 0.0;
     double d_E_W_Ch = 0.0, d_E_W_Cx = 0.0, d_E_b_C = 0.0;
@@ -216,7 +220,7 @@ char lstmlib_fit_unit(struct lstmlib *unit, double lr)
             d_h_W_fh = 0.0;
             d_h_W_fx = 0.0;
             temp1 = tanh((*unit).C[i]);
-            temp2 = 1.0 / (1.0 - exp(-((*unit).W_ix * (*unit).x[i] + (*unit).b_i)));
+            temp2 = 1.0 / (1.0 + exp(-((*unit).W_ix * (*unit).x[i] + (*unit).b_i)));
             d_h_b_i = (*unit).o[i] * (1.0 - temp1 * temp1) * (*unit).tilde_C[i] * (1.0 - temp2) * temp2;
             d_h_W_ih = 0.0;
             d_h_W_ix = d_h_b_i * (*unit).x[i];
@@ -224,11 +228,17 @@ char lstmlib_fit_unit(struct lstmlib *unit, double lr)
             d_h_b_C = (*unit).o[i] * (1.0 - temp1 * temp1) * (*unit).i[i] * (1.0 - temp2 * temp2);
             d_h_W_Ch = 0.0;
             d_h_W_Cx = d_h_b_C * (*unit).x[i];
-            temp2 = 1.0 / (1.0 - exp(-((*unit).W_ox * (*unit).x[i] + (*unit).b_o)));
+            temp2 = 1.0 / (1.0 + exp(-((*unit).W_ox * (*unit).x[i] + (*unit).b_o)));
             d_h_b_o = temp1 * (1.0 - temp2) * temp2;
             d_h_W_oh = 0.0;
             d_h_W_ox = d_h_b_o * (*unit).x[i];
         } else {
+            // 这里计算当 t>1 时的情况，需要算出的变量是所有的 d_h_xxx
+            temp3 = (*unit).W_oh * (*unit).h[i - 1] + (*unit).W_ox * (*unit).x[i] + (*unit).b_o;
+            temp3 = 1.0 / (1.0 + exp(-temp3));
+            temp1 = temp3 * (1 - temp3) * (*unit).W_oh * d_h_W_fh_last;
+            //temp2 =
+            //d_h_W_fh = temp1 * tanh((*unit).C[i]) + (*unit).o[i] * (1 - tanh((*unit).C[i]) * tanh((*unit).C[i])) * temp2;
         }
         d_E_W_fh = d_E_W_fh + 2.0 / length * ((*unit).h[i] - (*unit).hat_h[i]) * d_h_W_fh;
         d_E_W_fx = d_E_W_fx + 2.0 / length * ((*unit).h[i] - (*unit).hat_h[i]) * d_h_W_fx;
@@ -242,6 +252,11 @@ char lstmlib_fit_unit(struct lstmlib *unit, double lr)
         d_E_W_oh = d_E_W_oh + 2.0 / length * ((*unit).h[i] - (*unit).hat_h[i]) * d_h_W_oh;
         d_E_W_ox = d_E_W_ox + 2.0 / length * ((*unit).h[i] - (*unit).hat_h[i]) * d_h_W_ox;
         d_E_b_o = d_E_b_o + 2.0 / length * ((*unit).h[i] - (*unit).hat_h[i]) * d_h_b_o;
+
+        d_h_W_fh_last = d_h_W_fh; d_h_W_fx_last = d_h_W_fx; d_h_b_f_last = d_h_b_f;
+        d_h_W_ih_last = d_h_W_ih; d_h_W_ix_last = d_h_W_ix; d_h_b_i_last = d_h_b_i;
+        d_h_W_Ch_last = d_h_W_Ch; d_h_W_Cx_last = d_h_W_Cx; d_h_b_C_last = d_h_b_C;
+        d_h_W_oh_last = d_h_W_oh; d_h_W_ox_last = d_h_W_ox; d_h_b_o_last = d_h_b_o;
     }
     (*unit).W_fh = (*unit).W_fh - lr * d_E_W_fh;
     (*unit).W_fx = (*unit).W_fx - lr * d_E_W_fx;
