@@ -32,6 +32,7 @@ struct lstmlib
 struct lstmlib* lstmlib_create(int length);
 char lstmlib_random_params(struct lstmlib *unit, double min, double max);
 char lstmlib_run(struct lstmlib *unit, double *input, double *output);
+char lstmlib_run_unit(struct lstmlib *unit);
 double lstmlib_get_mse(struct lstmlib *unit);
 char lstmlib_fit_unit(struct lstmlib *unit, double lr);
 

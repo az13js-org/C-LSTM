@@ -144,6 +144,19 @@ char lstmlib_run(struct lstmlib *unit, double *input, double *output)
     output_back = (*unit).h;
     (*unit).x = input;
     (*unit).h = output;
+    lstmlib_run_unit(unit);
+    (*unit).x = input_back;
+    (*unit).h = output_back;
+    return 1;
+}
+
+char lstmlib_run_unit(struct lstmlib *unit)
+{
+    int i, length;
+    double s;
+    if (NULL == unit) {
+        return 0;
+    }
     length = (*unit).length;
     for (i = 0; i < length; i++) {
         if (i == 0) {
@@ -170,8 +183,6 @@ char lstmlib_run(struct lstmlib *unit, double *input, double *output)
             (*unit).h[i] = (*unit).o[i] * tanh((*unit).C[i]);
         }
     }
-    (*unit).x = input_back;
-    (*unit).h = output_back;
     return 1;
 }
 
