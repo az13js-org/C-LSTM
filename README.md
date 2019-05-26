@@ -233,3 +233,13 @@ LSTM 全称是 "Long Short-Term Memory"，一种用来学习大量时序序列�
 ##### 功能
 
 进行反向梯度下降，修正参数。
+
+## 测试
+
+`test_sin_cos.c`
+
+![](images/test_sin_cos_pre.png)
+
+`test_rectangle_cos_pre.c`
+
+![](images/test_rectangle_cos_pre.png)
