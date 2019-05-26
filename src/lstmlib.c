@@ -376,16 +376,16 @@ char lstmlib_fit_unit(struct lstmlib *unit, double lr)
             // Part 9
             temp1 = (*unit).W_oh * (*unit).h[i - 1] + (*unit).W_ox * (*unit).x[i] + (*unit).b_o;
             temp1 = 1.0 / (1.0 + exp(-temp1));
-            temp1 = temp1 * (1.0 - temp1) * (*unit).W_oh * d_C_b_C_last;
+            temp1 = temp1 * (1.0 - temp1) * (*unit).W_oh * d_h_b_C_last;
             temp2 = (*unit).W_fh * (*unit).h[i - 1] + (*unit).W_fx * (*unit).x[i] + (*unit).b_f;
             temp2 = 1.0 / (1.0 + exp(-temp2));
-            temp2 = temp2 * (1.0 - temp2) * (*unit).W_fh * d_C_b_C_last;
+            temp2 = temp2 * (1.0 - temp2) * (*unit).W_fh * d_h_b_C_last;
             temp3 = (*unit).W_ih * (*unit).h[i - 1] + (*unit).W_ix * (*unit).x[i] + (*unit).b_i;
             temp3 = 1.0 / (1.0 + exp(-temp3));
-            temp3 = temp3 * (1.0 - temp3) * (*unit).W_ih * d_C_b_C_last;
+            temp3 = temp3 * (1.0 - temp3) * (*unit).W_ih * d_h_b_C_last;
             temp4 = (*unit).W_Ch * (*unit).h[i - 1] + (*unit).W_Cx * (*unit).x[i] + (*unit).b_C;
             temp4 = tanh(temp4);
-            temp4 = (1.0 - temp4 * temp4) * ((*unit).W_Ch * d_C_b_C_last + 1.0);
+            temp4 = (1.0 - temp4 * temp4) * ((*unit).W_Ch * d_h_b_C_last + 1.0);
             d_C_b_C = temp2 * (*unit).C[i - 1] + (*unit).f[i] * d_C_b_C_last + temp3 * (*unit).tilde_C[i] + (*unit).i[i] * temp4;
             d_h_b_C = temp1 * tanh((*unit).C[i]) + (*unit).o[i] * (1.0 - tanh((*unit).C[i]) * tanh((*unit).C[i])) * d_C_b_C;
             // Part 10

@@ -23,3 +23,6 @@ gcc -O3 src/lstmlib.c src/test_sin_cos_pre.c -lm -o test_sin_cos_pre.out
 
 gcc -O3 src/lstmlib.c src/test_rectangle_cos_pre.c -lm -o test_rectangle_cos_pre.out
 ./test_rectangle_cos_pre.out >test_rectangle_cos_pre.csv
+
+gcc -O3 src/lstmlib.c src/test_params_change.c -lm -o test_params_change.out
+./test_params_change.out >test_params_change.csv
