@@ -195,7 +195,21 @@ LSTM 全称是 "Long Short-Term Memory"，一种用来学习大量时序序列�
 
 以指定`input`、`output`作为输入输出区域，运行 LSTM。
 
-#### 4. `double lstmlib_get_mse(struct lstmlib *unit);`
+#### 4. `char lstmlib_run_unit(struct lstmlib *unit);`
+
+##### 参数
+
+1. `unit`：一个 LSTM 单元结构体指针。
+
+##### 返回值
+
+执行成功返回 `1`，失败返回`0`。
+
+##### 功能
+
+运行 LSTM。
+
+#### 5. `double lstmlib_get_mse(struct lstmlib *unit);`
 
 ##### 参数
 
@@ -204,3 +218,28 @@ LSTM 全称是 "Long Short-Term Memory"，一种用来学习大量时序序列�
 ##### 返回值
 
 一个浮点数，MSE。
+
+### 6. `char lstmlib_fit_unit(struct lstmlib *unit, double lr);`
+
+#### 参数
+
+1. `unit`：一个 LSTM 单元结构体指针。
+2. `lr`：浮点数，学习速率。
+
+##### 返回值
+
+执行成功返回 `1`，失败返回`0`。
+
+##### 功能
+
+进行反向梯度下降，修正参数。
+
+## 测试
+
+`test_sin_cos.c`
+
+![](images/test_sin_cos_pre.png)
+
+`test_rectangle_cos_pre.c`
+
+![](images/test_rectangle_cos_pre.png)
