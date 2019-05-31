@@ -2,6 +2,10 @@
 
 #define LSTMLIB
 
+#include <stdlib.h>
+#include <math.h>
+#include <stdio.h>
+
 struct lstmlib
 {
     int length;
@@ -35,5 +39,6 @@ char lstmlib_run(struct lstmlib *unit, double *input, double *output);
 char lstmlib_run_unit(struct lstmlib *unit);
 double lstmlib_get_mse(struct lstmlib *unit);
 char lstmlib_fit_unit(struct lstmlib *unit, double lr);
+int lstmlib_save(struct lstmlib *unit, char *file_name);
 
 #endif

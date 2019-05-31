@@ -1,7 +1,4 @@
 #include "lstmlib.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 
 struct lstmlib* lstmlib_create(int length)
 {
@@ -470,4 +467,36 @@ char lstmlib_fit_unit(struct lstmlib *unit, double lr)
     (*unit).W_ox = (*unit).W_ox - lr * d_E_W_ox;
     (*unit).b_o = (*unit).b_o - lr * d_E_b_o;
     return 1;
+}
+
+int lstmlib_save(struct lstmlib *unit, char *file_name)
+{
+    FILE *file;
+    int write = 0;
+    if (NULL == unit) {
+        return 0;
+    }
+    if (0 != (*unit).error_no) {
+        return 0;
+    }
+    file = fopen(file_name, "w");
+    if (NULL == file) {
+        return 0;
+    }
+    write += fprintf(file, "0\n"); // version
+    write += fprintf(file, "%d\n", (*unit).length);
+    write += fprintf(file, "%lf\n", (*unit).W_fh);
+    write += fprintf(file, "%lf\n", (*unit).W_fx);
+    write += fprintf(file, "%lf\n", (*unit).b_f);
+    write += fprintf(file, "%lf\n", (*unit).W_ih);
+    write += fprintf(file, "%lf\n", (*unit).W_ix);
+    write += fprintf(file, "%lf\n", (*unit).b_i);
+    write += fprintf(file, "%lf\n", (*unit).W_Ch);
+    write += fprintf(file, "%lf\n", (*unit).W_Cx);
+    write += fprintf(file, "%lf\n", (*unit).b_C);
+    write += fprintf(file, "%lf\n", (*unit).W_oh);
+    write += fprintf(file, "%lf\n", (*unit).W_ox);
+    write += fprintf(file, "%lf\n", (*unit).b_o);
+    fclose(file);
+    return write;
 }
