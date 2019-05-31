@@ -2,6 +2,10 @@
 
 #define LSTMLIB
 
+#include <stdlib.h>
+#include <math.h>
+#include <stdio.h>
+
 struct lstmlib
 {
     int length;
