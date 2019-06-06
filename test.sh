@@ -29,3 +29,5 @@ gcc -O3 src/lstmlib.c src/test_params_change.c -lm -o test_params_change.out
 
 gcc -O3 src/lstmlib.c src/test_save.c -lm -o test_save.out
 ./test_save.out
+
+gcc -O3 src/lstmlib.c src/lstmslib.c src/test_lstmslib.c -lm -o test_lstmslib.out && ./test_lstmslib.out

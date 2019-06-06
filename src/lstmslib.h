@@ -22,5 +22,7 @@ struct lstmslib
 };
 
 struct lstmslib* lstmslib_create(int length, int lstm_num); // 创建 LSTM 多单元对象
+char lstmslib_run_unit(struct lstmslib *lstms); // 运行 LSTMs
+char lstmslib_fit_unit(struct lstmlib *lstms, double lr); // 修正参数
 
 #endif
