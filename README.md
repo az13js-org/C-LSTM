@@ -264,3 +264,17 @@ LSTM 全称是 "Long Short-Term Memory"，一种用来学习大量时序序列�
 ![](images/test_params_change.png)
 
 参数变化随着MSE的下降趋于稳定，变化过程平滑不存在突然的跳变。训练结束后LSTM的输出值趋近与期望值。这些特点表明算法的实现与理论一致，是没有问题的。
+
+## 有噪声的情况下
+
+后来，对`test_sin_cos_pre.c`进行些改动后测试了带噪声的情况。假如对输出序列`hat_h`增加`+-0.1`的平均噪声，结果如下：
+
+![](images/test_sin_cos_pre_noise_1.png)
+
+如果只对输入序列`x`添加噪声，相同情况训练出来的结果是：
+
+![](images/test_sin_cos_pre_noise_2.png)
+
+如果对`x`和`hat_h`都添加噪声，相同情况训练出来的结果是：
+
+![](images/test_sin_cos_pre_noise_3.png)
